@@ -1,5 +1,6 @@
 import mysql from "mysql2/promise"
-import { config } from "dotenv";
+import dotenv from "dotenv";
+
 dotenv.config()
 
 //define connection string
@@ -11,21 +12,32 @@ const dbConfig = {
     database: "academic_foundations"
 }
 
+//added by codex
+const serverConfig = {
+    host: dbConfig.host,
+    user: dbConfig.user,
+    password: dbConfig.password
+}
+
 const pool = mysql.createPool(dbConfig)
+const serverPool = mysql.createPool(serverConfig)
+
 
 const connectDB = async () => {
     try {
-        await pool.$connect()
+        const connection = await pool.getConnection()
+        connection.release()
         console.log("db connected successfully");
         
     } catch (error) {
-        console.log("db failed to connect");   
+        console.log("database failed to connect", error.message);   
         process.exit(1)             
     }    
 }
 
 const disconnectDB = async () => {
-    await pool.$disconnect()    
+    await pool.end()
+    await serverPool.end()    
 }
 
-export {pool} 
+export {pool, serverPool, dbConfig, connectDB, disconnectDB} 
