@@ -12,9 +12,9 @@ let tableName = "words"
 
 export const schemaSql = {
     createDatabase: `CREATE DATABASE IF NOT EXISTS ${dbConfig.database}`,
-    table1: `CREATE TABLE ${tableName}(
-    word_id INT PRIMARY KEY,
-    word VARCHAR(100) NOT NULL,
+    table1: `CREATE TABLE IF NOT EXISTS ${tableName}(
+    word_id INT AUTO_INCREMENT PRIMARY KEY,
+    word VARCHAR(100) UNIQUE NOT NULL,
     wordLength INT
     )`
 }
@@ -28,14 +28,14 @@ function dynamicInsert (object, tableName){
         let word = object[key]        
         
         word.forEach(element => {
-            let query = `INSERT INTO ${tableName} (word, wordLength) VALUES (${element}, ${wordLength}) `
+            let query = `INSERT INTO ${tableName} (word, wordLength) VALUES (\'${element}\', ${wordLength}) `
             dynamicInsertArr.push(query)     
-             console.log("arrayQuery", query);                   
+             console.log(`query ${wordLength}`, query);                   
         });
     }
     return dynamicInsertArr
 }
-dynamicInsert(dummyObject,tableName)
+let dynamicInsertArr = dynamicInsert(dummyObject,tableName)
 
 //this code here changes is what runs the SQL query itself.
 export const createSchema = async () => {
