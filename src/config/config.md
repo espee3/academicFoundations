@@ -13,3 +13,7 @@ maybe in future the code can verify if the words are true, however lets keep it 
 //next time I will confirm if so far so good my code is on track i.e the schema creation
 //also check if it appears on my db, of course after researching through those questions
 //using A.I then I will now work on the logic in my code notebook
+
+//I need to ensure that in schema.js, that code for inputing values into the table only runs wheb it is run from the frontend once and
+
+//let you sortController make all the letters to be small letters
